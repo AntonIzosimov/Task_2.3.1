@@ -1,7 +1,6 @@
 package web.model;
 
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
@@ -110,5 +109,29 @@ public class User implements UserDetails {
 
     public void setAge(byte age) {
         this.age = age;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        User user = (User) o;
+
+        if (age != user.age) return false;
+        if (!Objects.equals(id, user.id)) return false;
+        if (!Objects.equals(username, user.username)) return false;
+        if (!Objects.equals(lastName, user.lastName)) return false;
+        return Objects.equals(roles, user.roles);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (username != null ? username.hashCode() : 0);
+        result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
+        result = 31 * result + (int) age;
+        result = 31 * result + (roles != null ? roles.hashCode() : 0);
+        return result;
     }
 }

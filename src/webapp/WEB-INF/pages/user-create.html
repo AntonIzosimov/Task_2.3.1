@@ -15,11 +15,11 @@
 <form th:method="POST" th:action="@{user-create}" th:object="${user}">
     <label for="name">Username</label>
     <p><input type="text" th:field="*{username}" id="name"></p>
-    <label for="lastName" class="form-label">LastName</label>
+    <label for="lastName">LastName</label>
     <p><input type="text" th:field="*{lastName}" id="lastName"></p>
-    <label for="age" class="form-label">Age</label>
+    <label for="age">Age</label>
     <p><input type="number" th:field="*{age}" id="age"></p>
-    <label for="password" class="form-label">Password</label>
+    <label for="password">Password</label>
     <p><input type="number" th:field="*{password}" id="password"></p>
     <div class="form-group row">
         <label>Roles: </label>

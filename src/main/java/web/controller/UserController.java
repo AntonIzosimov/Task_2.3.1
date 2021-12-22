@@ -49,8 +49,7 @@ public class UserController {
     }
 
     @PostMapping("/admin/user-create")
-    public String createUser(@ModelAttribute("user") User user, @RequestParam("roles") String[] roles,
-                             @RequestParam("password") String password) {
+    public String createUser(@ModelAttribute("user") User user, @RequestParam("roles") String[] roles) {
         String pass = user.getPassword();
         user.setRoles(addRolesToUser(roles));
         user.setPassword(new BCryptPasswordEncoder().encode(pass));
@@ -73,10 +72,11 @@ public class UserController {
         return "/user-edit";
     }
     @PatchMapping("/admin/user-edit/{id}")
-    public String edit(@PathVariable Long id, @RequestParam("roles") String[] roles, Model model) {
-        User merged = userService.getUserById(id);
-        merged.setRoles(addRolesToUser(roles));
-        userService.editUser(merged);
+    public String edit(@ModelAttribute("user") User user, @RequestParam("roles") String[] roles) {
+        String pass = user.getPassword();
+        user.setPassword(new BCryptPasswordEncoder().encode(pass));
+        user.setRoles(addRolesToUser(roles));
+        userService.editUser(user);
         return "redirect:/admin";
     }
 
