@@ -8,18 +8,30 @@
 </head>
 <body>
 <h2>Register</h2>
-<div class="btn-group">
-    <a href="/" class="btn btn-primary active" aria-current="page">Список</a>
-    <a href="/user-create" class="btn btn-primary">Добавить пользователя</a>
-</div>
+<ul class="nav navbar-nav">
+    <li><a th:href="@{/user}">Profile</a></li>
+    <li><a th:href="@{/admin}">User's Table</a></li>
+</ul>
 <form th:method="POST" th:action="@{user-create}" th:object="${user}">
-    <label for="name">Имя</label>
-    <p><input type="text" th:field="*{name}" id="name"></p>
-    <label for="lastName">Фамилия</label>
+    <label for="name">Username</label>
+    <p><input type="text" th:field="*{username}" id="name"></p>
+    <label for="lastName" class="form-label">LastName</label>
     <p><input type="text" th:field="*{lastName}" id="lastName"></p>
-    <label for="age">Возраст</label>
-    <p><input type="text" th:field="*{age}" id="age"></p>
-    <button type="submit" class="btn btn-outline-success">Добавить</button>
+    <label for="age" class="form-label">Age</label>
+    <p><input type="number" th:field="*{age}" id="age"></p>
+    <label for="password" class="form-label">Password</label>
+    <p><input type="number" th:field="*{password}" id="password"></p>
+    <div class="form-group row">
+        <label>Roles: </label>
+        <div>
+            <th:block th:each="role: ${roleList}">
+                <input type="checkbox" th:field="*{roles}"
+                       th:text="${role.name}" th:value="${role.name}" class="m-2"/>
+            </th:block>
+        </div>
+    </div>
+    <button type="submit">Добавить</button>
 </form>
+<a th:href="@{/logout}">Exit</a>
 </body>
 </html>

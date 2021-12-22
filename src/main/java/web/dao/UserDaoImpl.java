@@ -2,14 +2,16 @@ package web.dao;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+
 import web.model.User;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+
 import java.util.List;
 
-@Repository
 @Transactional
+@Repository
 public class UserDaoImpl implements UserDao {
 
     @PersistenceContext
@@ -17,8 +19,9 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public List<User> getAllUsers() {
-        return entityManager.
-                createQuery("from User ", User.class).getResultList();
+        return entityManager
+                .createQuery("select distinct u from User u left join fetch u.roles", User.class)
+                .getResultList();
     }
 
     @Override
@@ -33,13 +36,20 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User getUserById(Long id) {
-        return entityManager.find(User.class, id);
+        return entityManager.createQuery(
+                        "from User u join fetch u.roles where u.id =:id", User.class)
+                .setParameter("id", id).getSingleResult();
     }
 
     @Override
-    public User editUser(User user, Long id) {
-        User merged = entityManager.find(User.class, id);
+    public User getUserByName(String username) {
+        return entityManager.createQuery(
+                        "from User u join fetch u.roles where u.username =:username", User.class)
+                .setParameter("username", username).getSingleResult();
+    }
+
+    @Override
+    public void editUser(User user) {
         entityManager.merge(user);
-        return merged;
     }
 }
